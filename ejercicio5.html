@@ -1,0 +1,133 @@
+<html>
+    <head>
+        EJERCICIO 5 Canul Chavez
+    </head>
+    <body>
+    <script language="JavaScript"> 
+        var alumnos = parseInt(prompt('ingresa numero de Alumnos',''));
+        var materias = parseInt(prompt('ingresa numero de Materias',''));
+        var principalArray = new Array();
+        var cont = 0;
+
+        CreaTabla(alumnos, materias);
+        //creacion de la tabla para contenido de alumnos y materias 
+        function CreaTabla(alumnos, materias){
+            var body = document.getElementsByTagName("body")[0];
+            var tabla = document.createElement("table");
+
+            for(var i = 0; i <= (alumnos+1); i++){//esto es para creacion de filas
+                filas = document.createElement("tr");
+                filas.setAttribute("placeholder", "Materia");
+                
+                for(var j = 0; j <= (materias+1); j++){//creacion de columnas columnas
+                    titulos = document.createElement("th");
+                    columnas = document.createElement("td");
+                    
+                    if(i==0 && j==0){
+                        titulos.innerHTML = "Alumnos";
+                        filas.appendChild(titulos);
+                    }
+                    else if(i==0 && j!=(materias+1)){
+                        titulos.innerHTML = "Materia "+j;
+                        titulos.setAttribute("coldspan",""+alumnos);
+                        filas.appendChild(titulos);
+                    }
+                    else if (i==0 && j==(materias+1)) {
+                        titulos.innerHTML = "Promedio";
+                        filas.appendChild(titulos);
+                    }
+                    else if(i>=1 && j==0 && i <(alumnos+1)){
+                        columnas.innerHTML = "Alumno "+i;
+                        filas.appendChild(columnas);
+                    }
+                    else if(i>=1 && j!=(materias+1) && i <(alumnos+1)){
+                        columnas.innerHTML = "<input type='number' value='0' id='cal"+i+""+j+"' min='0' max='100' onchange='Promedios("+i+","+materias+","+alumnos+")'>";
+                        filas.appendChild(columnas);
+                    }
+                    else if(j == (materias+1) && i <(alumnos+1)){//pormedios
+                        
+                        columnas.innerHTML = "<input type='number' value='0' readonly id='promedio"+i+"' >";
+                        filas.appendChild(columnas);
+                    }
+                    else if(i == (alumnos+1) && j == (materias+1)){//boton
+                        columnas.innerHTML = "<input type='button' value='Promedio Grupal'  id='boton' onclick='Calcular("+alumnos+")'>";
+                        filas.appendChild(columnas);
+                    }
+                    else if(i == (alumnos+1) && j < (materias+1)){
+                        columnas.innerHTML = "";
+                        filas.appendChild(columnas);
+                    }
+                }
+                tabla.appendChild(filas);
+            }
+            //estilo de la tabla que contiene los datos a mostrar
+            tabla.setAttribute("border", "4");
+            tabla.setAttribute("text-align", "center");
+            body.appendChild(tabla);
+            
+        }
+        //funcion que calcula el promedio de cada alumno
+        function Promedios(posicionAlum, materias, alumnos){
+            var promedioAlum = document.getElementById("promedio"+posicionAlum);
+            var promedioArray = new Array(materias);
+            var i = 0; cont++;
+            var sumaTotal = 0;
+            var promedio = 0;
+            for (var j = 1; j <= materias; j++) {
+                promedioArray[i] = parseInt(document.getElementById("cal"+posicionAlum+j).value);
+                i++
+            }
+            for (var m = 0; m < promedioArray.length; m++) {
+                sumaTotal = sumaTotal + promedioArray[m];
+            }
+            promedio = sumaTotal / materias;
+            promedioAlum.setAttribute("value",""+promedio);
+            
+            if(cont == materias){
+                cont=0;
+                principalArray.push(promedio);
+            }
+        }
+        //funcion para hacer los calculos necesarios para sacar promedios grupal, aprobados y reprobados
+        function Calcular(alumnos){
+            var body = document.getElementsByTagName("body")[0];
+            var parrafo = document.createElement("P");
+            var promedioAlumno = new Array(alumnos);
+            var promedioGrupal = 0, promedioAprobado = 0, promedioReprobado = 0;
+            var totalReprobado = 0, totalAprobado = 0;
+            var porcentajeAprobado = 0, porcentajeReprobado = 0;
+            
+            //Calcula el Promedio grupal
+            for (var i = 0; i < principalArray.length; i++) {
+                promedioGrupal += principalArray[i];
+                if (principalArray[i] >= 70) {//promedio aprobados 
+                    promedioAprobado += principalArray[i];
+                    totalAprobado++;
+                }
+                else{//promedio reprobados
+                    promedioReprobado += principalArray[i];
+                    totalReprobado++;
+                }
+            }
+            //calculo de promedios de grupal, aprobados y reprobados.
+            promedioGrupal = promedioGrupal/alumnos;
+            promedioAprobado = promedioAprobado/alumnos;
+            promedioReprobado = promedioReprobado/alumnos;
+            porcentajeAprobado = (totalAprobado*100)/alumnos;
+            porcentajeReprobado = (totalReprobado*100)/alumnos;    
+            //Muestra en pantalla informacion calculada
+            parrafo.innerHTML += "Promedio del Grupo: "+promedioGrupal+"<br>";
+            parrafo.innerHTML += "<br>";
+            parrafo.innerHTML += "Aprobados:  "+totalAprobado+"<br>";
+            parrafo.innerHTML += "Promedio Aprobados:  "+promedioAprobado+"<br>";
+            parrafo.innerHTML += "<br>";
+            parrafo.innerHTML += "Reprobados: "+totalReprobado+"<br>";
+            parrafo.innerHTML += "Promedio Reprobados: "+promedioReprobado+"<br>";
+            parrafo.innerHTML += "<br>";
+            parrafo.innerHTML += "Porcentaje aprobación:  "+porcentajeAprobado+"<br>";
+            parrafo.innerHTML += "Procentaje reprobación: "+porcentajeReprobado+"<br>";
+            body.appendChild(parrafo);
+        }
+    </script>
+    </body>
+</html>

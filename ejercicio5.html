@@ -50,7 +50,7 @@
                         filas.appendChild(columnas);
                     }
                     else if(i == (alumnos+1) && j == (materias+1)){//boton
-                        columnas.innerHTML = "<input type='button' value='Promedio Grupal'  id='boton' onclick='Calcular("+alumnos+")'>";
+                        columnas.innerHTML = "<input type='button' value='Promedio del grupo'  id='boton' onclick='Calcular("+alumnos+")'>";
                         filas.appendChild(columnas);
                     }
                     else if(i == (alumnos+1) && j < (materias+1)){
@@ -60,9 +60,6 @@
                 }
                 tabla.appendChild(filas);
             }
-            //estilo de la tabla que contiene los datos a mostrar
-            tabla.setAttribute("border", "4");
-            tabla.setAttribute("text-align", "center");
             body.appendChild(tabla);
             
         }
@@ -97,7 +94,7 @@
             var totalReprobado = 0, totalAprobado = 0;
             var porcentajeAprobado = 0, porcentajeReprobado = 0;
             
-            //Calcula el Promedio grupal
+            //Calcula el Promedio del grupo
             for (var i = 0; i < principalArray.length; i++) {
                 promedioGrupal += principalArray[i];
                 if (principalArray[i] >= 70) {//promedio aprobados 
